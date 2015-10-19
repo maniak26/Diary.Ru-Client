@@ -15,7 +15,8 @@
         android:label="@string/app_name"
         android:theme="@style/DiaryThemeRed" >
         <activity
-            android:name=".AuthorizationForm"
+            android:name="adonai.diary_browser.AuthorizationForm"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_authorization_form" />
         <activity
             android:name=".DiaryListActivity"

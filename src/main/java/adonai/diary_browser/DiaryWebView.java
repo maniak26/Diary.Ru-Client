@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -140,6 +141,9 @@ public class DiaryWebView extends WebView {
             return null;
         }
 
+        /**
+         * Хак чтобы заставить работать систему перехвата копирования
+         */
         @Override
         public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
             boolean result = mOriginalCallback.onCreateActionMode(mode, menu);
@@ -147,11 +151,13 @@ public class DiaryWebView extends WebView {
             if(copyButton == null) {
                 return result;
             }
-            
-            copyButton.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_NEVER);
-            menu.add(copyButton.getGroupId(), copyButton.getItemId(), copyButton.getOrder(), R.string.quote) // будет в начале
-                .setIcon(copyButton.getIcon())
-                .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_ALWAYS)
+
+            TypedValue drawable = new TypedValue();
+            getContext().getTheme().resolveAttribute(R.attr.quote_menu_drawable, drawable, true);
+
+            menu.add(copyButton.getGroupId(), Menu.NONE, copyButton.getOrder(), R.string.quote) // будет в начале
+                .setIcon(drawable.resourceId)
+                .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -177,7 +183,7 @@ public class DiaryWebView extends WebView {
                         return true;
                     }
                 });
-            
+
             return result;
         }
 

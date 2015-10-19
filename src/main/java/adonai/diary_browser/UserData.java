@@ -6,6 +6,8 @@ import org.jsoup.select.Elements;
 import adonai.diary_browser.entities.DiaryListPage;
 import adonai.diary_browser.entities.DiaryPage;
 import adonai.diary_browser.entities.DiscListPage;
+import adonai.diary_browser.entities.ListPage;
+import adonai.diary_browser.entities.UmailListPage;
 import adonai.diary_browser.entities.UmailPage;
 import adonai.diary_browser.entities.WebPage;
 
@@ -14,17 +16,20 @@ public class UserData {
     private boolean isAuthorized;
     
     // Динамические списки постов
-    private DiaryListPage currentDiaries;
-    private DiaryListPage currentUmails;
+    private DiaryListPage<ListPage> currentDiaries;
+    private DiaryListPage<UmailListPage> currentUmails;
     private DiscListPage discussions;
     private WebPage currentDiaryPage;
     private UmailPage currentUmailPage;
     
     // Личные данные
-    private String ownDiaryUrl = "";
     private String ownProfileId = "";
     private String userName = "";
     private String signature = "";
+    
+    // Ссылки
+    private String ownDiaryUrl = "";
+    private String ownFavoritesPageUrl = "http://www.diary.ru/?favorite";
     
     // число новых постов в дискуссиях
     private Integer newDiscussNum = 0;
@@ -39,8 +44,8 @@ public class UserData {
     private String newDiaryLink = "";
 
     UserData() {
-        setCurrentDiaries(new DiaryListPage());
-        setCurrentUmails(new DiaryListPage());
+        setCurrentDiaries(new DiaryListPage<>());
+        setCurrentUmails(new DiaryListPage<UmailListPage>());
         setCurrentDiaryPage(new DiaryPage());
         setCurrentUmailPage(new UmailPage());
         setDiscussions(new DiscListPage());
@@ -121,19 +126,19 @@ public class UserData {
         this.isAuthorized = isAuthorised;
     }
 
-    DiaryListPage getCurrentDiaries() {
+    DiaryListPage<ListPage> getCurrentDiaries() {
         return currentDiaries;
     }
 
-    void setCurrentDiaries(DiaryListPage currentDiaries) {
+    void setCurrentDiaries(DiaryListPage<ListPage> currentDiaries) {
         this.currentDiaries = currentDiaries;
     }
 
-    DiaryListPage getCurrentUmails() {
+    DiaryListPage<UmailListPage> getCurrentUmails() {
         return currentUmails;
     }
 
-    void setCurrentUmails(DiaryListPage currentUmails) {
+    void setCurrentUmails(DiaryListPage<UmailListPage> currentUmails) {
         this.currentUmails = currentUmails;
     }
 
@@ -165,8 +170,17 @@ public class UserData {
         return ownDiaryUrl;
     }
 
+    public String getOwnFavoritesPageUrl() {
+        return ownFavoritesPageUrl;
+    }
+
+    /**
+     * Также устанавливает ссылку на избранное
+     * @param ownDiaryUrl ссылка на дневник владельца
+     */
     void setOwnDiaryUrl(String ownDiaryUrl) {
         this.ownDiaryUrl = ownDiaryUrl;
+        this.ownFavoritesPageUrl = ownDiaryUrl + "?favorite";
     }
 
     String getOwnProfileId() {

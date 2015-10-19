@@ -551,6 +551,33 @@ public class NetworkService extends Service implements Callback, OnSharedPrefere
                     break;
                 }
             }
+            case Utils.HANDLE_REQUEST_DIARY: {
+                String diaryName = (String) message.obj;
+
+                final List<Pair<String, String>> nameValuePairs = new ArrayList<>();
+                nameValuePairs.add(Pair.create("module", "registration"));
+                nameValuePairs.add(Pair.create("act", "new_journal_post"));
+                nameValuePairs.add(Pair.create("journal_act", "1"));
+                nameValuePairs.add(Pair.create("diary_title", diaryName));
+                nameValuePairs.add(Pair.create("community_title", ""));
+                nameValuePairs.add(Pair.create("signature", mUser.getSignature()));
+
+                String response = mNetworkClient.postPageToString(nameValuePairs);
+                if(response == null) {
+                    notifyListeners(Utils.HANDLE_CONNECTIVITY_ERROR, R.string.connection_error);
+                    break;
+                }
+                
+                String mainPage = mNetworkClient.getPageAsString(Utils.MAIN_PAGE);
+                if(mainPage == null) {
+                    notifyListeners(Utils.HANDLE_CONNECTIVITY_ERROR, R.string.connection_error);
+                    break;
+                }
+                mUser.parseData(serializeMainPage(mainPage)); // get initial links
+                
+                notifyListeners(Utils.HANDLE_REQUEST_DIARY, true);
+                break;
+            }
             default:
                 return false;
         }
@@ -698,9 +725,8 @@ public class NetworkService extends Service implements Callback, OnSharedPrefere
 
         notifyListeners(Utils.HANDLE_PROGRESS_2);
         Elements postsArea = rootNode.select("[id~=post\\d+], div.pageBar");
-        if (postsArea.isEmpty()) { // Нет вообще никаких постов, заканчиваем
-            notifyListeners(Utils.HANDLE_NOTFOUND_ERROR);
-            return;
+        if (postsArea.isEmpty()) {
+            // notifyListeners(Utils.HANDLE_NOTFOUND_ERROR); // новый дневник?
         }
 
         Elements result = postsArea.clone();
@@ -928,7 +954,7 @@ public class NetworkService extends Service implements Callback, OnSharedPrefere
             mUser.getCurrentUmails().setPageLinks(Html.fromHtml(pages.outerHtml()));
 
         Elements rows = table.select("tr[id]");
-        Element title = null, author = null, last_post = null;
+        Element title = null, author = null, lastPost = null;
         for (Element row : rows) {
             if (title == null)
                 title = row.getElementsByClass("withfloat").first();
@@ -936,10 +962,10 @@ public class NetworkService extends Service implements Callback, OnSharedPrefere
             if (author == null)
                 author = row.select("[target=_blank]").first();
 
-            if (last_post == null)
-                last_post = row.getElementsByClass("r").first();
+            if (lastPost == null)
+                lastPost = row.getElementsByClass("r").first();
 
-            if (title != null && author != null && last_post != null) {
+            if (title != null && author != null && lastPost != null) {
                 UmailListPage mail = new UmailListPage();
                 mail.setTitle(title.getElementsByTag("b").text());
                 mail.setURL(title.attr("href"));
@@ -949,13 +975,17 @@ public class NetworkService extends Service implements Callback, OnSharedPrefere
                 mail.setAuthorURL(authorData);
                 mail.setAuthorID(authorData.substring(authorData.lastIndexOf("?") + 1));
 
-                mail.setLastUpdate(last_post.text());
-                mail.setLastUpdateURL(last_post.attr("href"));
+                mail.setLastUpdate(lastPost.text());
+                mail.setLastUpdateURL(lastPost.attr("href"));
+                
+                Element preview = row.select("span.flwin").first();
+                if(preview != null)
+                    mail.setPageHint(preview.text());
 
                 mail.setRead(!row.hasClass("not_readed_umail"));
 
                 mUser.getCurrentUmails().add(mail);
-                title = author = last_post = null;
+                title = author = lastPost = null;
             }
         }
     }
