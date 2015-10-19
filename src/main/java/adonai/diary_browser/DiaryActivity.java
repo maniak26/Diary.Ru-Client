@@ -127,8 +127,8 @@ public abstract class DiaryActivity extends AppCompatActivity implements Callbac
 
         TypedValue color = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, color, true);
-        swipeList.setColorSchemeColors(color.data);
-        swipeBrowser.setColorSchemeColors(color.data);
+        //swipeList.setColorSchemeColors(color.data);
+        //swipeBrowser.setColorSchemeColors(color.data);
     }
 
     @Override

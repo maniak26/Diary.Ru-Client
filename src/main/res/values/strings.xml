@@ -141,9 +141,11 @@
     <string name="incoming_mail">Входящие</string>
     <string name="outcoming_mail">Исходящие</string>
     <string name="menu_close">Остановка и выход</string>
+    <string name="umail">U-Mail</string>
     <string name="umail_activity_title">U-Mail Папки</string>
     <string name="umail_description">Почтовая служба UMail</string>
     <string name="quotes_description">Цитатник пользователя</string>
+    <string name="quotes">Цитатник</string>
     <string name="message_to">Получатель</string>
     <string name="message_need_receipt">Подтверждение о прочтении</string>
     <string name="message_copy">Сохранить сообщение</string>
@@ -316,4 +318,11 @@
     <string name="captcha_request">Подтверждение капчи</string>
     <string name="successfully_registered">Успешная регистрация</string>
     <string name="congratulation_registered">Поздравляем! Письмо с инструкциями по окончанию регистрации выслано на ваш E-mail. Вы можете зайти на свой дневник уже сейчас.</string>
+    <string name="title_activity_diary_new">DiaryNewActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="nav_others">Разное</string>
 </resources>

@@ -19,7 +19,7 @@ public class LaunchActivity extends ActionBarActivity {
                 !mSharedPrefs.getString(Utils.KEY_PASSWORD, "").isEmpty() &&
                 mSharedPrefs.getBoolean(Utils.KEY_KEEP_AUTH, true))
 
-            startActivity(new Intent(this, DiaryListActivity.class));
+            startActivity(new Intent(this, DiaryAppDrawerActivity.class));
         else
             startActivity(new Intent(this, AuthorizationForm.class));
 

@@ -8,4 +8,5 @@ public abstract class DiaryFragment extends Fragment {
     public DiaryActivity getDiaryActivity() {
         return (DiaryActivity) getActivity();
     }
+
 }

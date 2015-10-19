@@ -170,5 +170,11 @@
     <style name="DiaryTheme.Dark.ActionMode" parent="Widget.AppCompat.Light.ActionMode.Inverse">
         <item name="background">?attr/colorPrimary</item>
     </style>
+    <style name="DiaryThemeRed.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="DiaryThemeRed.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="DiaryThemeRed.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

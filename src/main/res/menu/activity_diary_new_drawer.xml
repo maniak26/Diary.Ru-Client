@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:title="@string/favourites"
+            android:id="@+id/nav_favlist" />
+        <item
+            android:title="@string/posts"
+            android:id="@+id/nav_fav" />
+        <item
+            android:title="@string/my_diary"
+            android:id="@+id/nav_diary" />
+        <item
+            android:title="@string/discussions"
+            android:id="@+id/nav_discussions" />
+        <item
+            android:title="@string/quotes"
+            android:id="@+id/nav_quotes" />
+        <item
+            android:title="@string/umail"
+            android:id="@+id/nav_umail" />
+    </group>
+
+    <item android:title="@string/nav_others">
+        <menu>
+            <item android:id="@+id/nav_settings"
+                android:icon="@android:drawable/ic_menu_preferences"
+                android:title="@string/menu_settings" />
+            <item android:id="@+id/nav_menu_close"
+                android:title="@string/menu_close" />
+        </menu>
+    </item>
+
+</menu>
