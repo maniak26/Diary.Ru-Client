@@ -23,6 +23,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_diary_list"
             android:launchMode="singleTask"
+            android:theme="@style/DiaryThemeRed.NoActionBar"
             android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -69,12 +70,6 @@
         <service
             android:name=".NetworkService"
             android:enabled="true" />
-
-        <activity
-            android:name=".DiaryAppDrawerActivity"
-            android:label="@string/title_activity_diary_list"
-            android:theme="@style/DiaryThemeRed.NoActionBar" >
-        </activity>
     </application>
 
 </manifest>

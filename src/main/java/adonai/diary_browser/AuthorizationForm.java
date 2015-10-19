@@ -112,7 +112,7 @@ public class AuthorizationForm extends AppCompatActivity implements OnClickListe
         Utils.setupTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authorization_form_a);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
         
         mSwitcher = (ViewSwitcher) findViewById(R.id.login_register_switcher);
         mPreferences = getApplicationContext().getSharedPreferences(Utils.mPrefsFile, MODE_PRIVATE);

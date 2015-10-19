@@ -7,7 +7,7 @@
     <attr name="button_tint" format="color" /> <!-- значки цитатника и U-Mail -->
     <attr name="quote_menu_drawable" format="reference" /> <!-- значок цитирования в Action-меню -->
 
-    <style name="DiaryThemeRed" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DiaryThemeRed" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#800000</item>
         <item name="colorPrimaryDark">#600000</item>
         <item name="colorAccent">#ffd13325</item>
