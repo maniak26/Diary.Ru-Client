@@ -5,21 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/slider">
+    android:id="@+id/slider"
+    tools:showIn="@layout/app_bar_diary_new"
+    tools:context="adonai.diary_browser.DiaryListActivity">
 
-    <fragment
-        android:name="adonai.diary_browser.MessageSenderFragment"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id="@+id/message_pane"
-        tools:layout="@layout/fragment_message_sender" />
+        <fragment
+            android:name="adonai.diary_browser.MessageSenderFragment"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/message_pane"
+            tools:layout="@layout/fragment_message_sender" />
 
-    <fragment
-        android:name="adonai.diary_browser.DiaryListFragment"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/main_pane"
-        tools:layout="@layout/fragment_diary_list" />
+        <fragment
+            android:name="adonai.diary_browser.DiaryListFragment"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/main_pane"
+            tools:layout="@layout/fragment_diary_list" />
 
 </adonai.diary_browser.DiarySlidePane>

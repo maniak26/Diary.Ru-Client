@@ -371,8 +371,11 @@ public class DiaryListActivity extends DiaryActivity
             case R.id.nav_discussions:
                 return true;
             case R.id.nav_quotes:
+                handleBackground(Utils.HANDLE_PICK_URL, new Pair<>(getUser().getOwnDiaryUrl() + "?quote", false));
                 return true;
             case R.id.nav_umail:
+                Intent postIntent = new Intent(getApplicationContext(), UmailListActivity.class);
+                startActivity(postIntent);
                 return true;
             case R.id.nav_settings:
                 return true;
