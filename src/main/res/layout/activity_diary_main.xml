@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<adonai.diary_browser.DiarySlidePane
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<adonai.diary_browser.DiarySlidePane xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/slider"
     tools:showIn="@layout/app_bar_diary_new"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="adonai.diary_browser.DiaryListActivity">
 
         <fragment

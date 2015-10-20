@@ -127,6 +127,11 @@ public class DiaryListActivity extends DiaryActivity
     LinearLayout mTabs;
     Handler mUiHandler;
 
+    Toolbar toolbar;
+    FloatingActionButton fab;
+    DrawerLayout drawer;
+    NavigationView navigationView;
+
     SwipeRefreshLayout swipeDiscussions;
     ArrowDrawable mActionBarToggle;
 
@@ -161,10 +166,10 @@ public class DiaryListActivity extends DiaryActivity
         messagePane = (MessageSenderFragment) getSupportFragmentManager().findFragmentById(R.id.message_pane);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,13 +178,13 @@ public class DiaryListActivity extends DiaryActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Оповещаем остальных, что мы создались
@@ -189,7 +194,7 @@ public class DiaryListActivity extends DiaryActivity
         mUiHandler = new Handler(this);
         CookieSyncManager.createInstance(this);
         initializeUI(mainPane.getView());
-
+        //TODO: разобрать инициализацию по отдельным функциям
         mLogin = (TextView) navigationView.findViewById(R.id.login_name);
     }
 
@@ -365,26 +370,36 @@ public class DiaryListActivity extends DiaryActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.nav_favlist:
-                return true;
+                setCurrentTab(TAB_FAV_LIST, false);
+                break;
             case R.id.nav_fav:
-                return true;
+                setCurrentTab(TAB_FAV_POSTS, false);
+                drawer.closeDrawer(navigationView);
+                break;
             case R.id.nav_diary:
-                return true;
+                setCurrentTab(TAB_MY_DIARY, false);
+                drawer.closeDrawer(navigationView);
+                break;
             case R.id.nav_discussions:
-                return true;
+                setCurrentTab(TAB_DISCUSSIONS, false);
+                drawer.closeDrawer(navigationView);
+                break;
             case R.id.nav_quotes:
                 handleBackground(Utils.HANDLE_PICK_URL, new Pair<>(getUser().getOwnDiaryUrl() + "?quote", false));
-                return true;
+                drawer.closeDrawer(navigationView);
+                break;
             case R.id.nav_umail:
                 Intent postIntent = new Intent(getApplicationContext(), UmailListActivity.class);
                 startActivity(postIntent);
-                return true;
+                drawer.closeDrawer(navigationView);
+                break;
             case R.id.nav_settings:
-                return true;
+                startActivity(new Intent(this, PreferencePage.class));
+                break;
             case R.id.nav_menu_close:
-                return true;
+                break;
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
