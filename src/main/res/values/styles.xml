@@ -28,7 +28,7 @@
         <item name="actionModeStyle">@style/DiaryTheme.WithDarkActionBar.ActionMode</item>
     </style>
 
-    <style name="DiaryThemeLight" parent="Theme.AppCompat.Light">
+    <style name="DiaryThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#909090</item>
         <item name="colorPrimaryDark">#707070</item>
         <item name="colorAccent">#607D8B</item>
@@ -45,7 +45,7 @@
         <item name="md_content_color">?attr/text_color_secondary</item>
     </style>
 
-    <style name="DiaryThemeDark" parent="Theme.AppCompat">
+    <style name="DiaryThemeDark" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">#202020</item>
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">#a0a0a0</item>
@@ -67,7 +67,7 @@
         <item name="actionModeStyle">@style/DiaryTheme.Dark.ActionMode</item>
     </style>
 
-    <style name="DiaryThemeLilac" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DiaryThemeLilac" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#8c8bc7</item>
         <item name="colorPrimaryDark">#6c6ba7</item>
         <item name="colorAccent">#433f58</item>
@@ -88,7 +88,7 @@
         <item name="actionModeStyle">@style/DiaryTheme.WithDarkActionBar.ActionMode</item>
     </style>
 
-    <style name="DiaryThemeDarkLilac" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DiaryThemeDarkLilac" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#6e4e89</item>
         <item name="colorPrimaryDark">#ff4e3468</item>
         <item name="colorAccent">#450038</item>
@@ -109,7 +109,7 @@
         <item name="actionModeStyle">@style/DiaryTheme.WithDarkActionBar.ActionMode</item>
     </style>
 
-    <style name="DiaryThemeGreen" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DiaryThemeGreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#003911</item>
         <item name="colorPrimaryDark">#ff001c0b</item>
         <item name="colorAccent">#ff006919</item>
@@ -130,7 +130,7 @@
         <item name="actionModeStyle">@style/DiaryTheme.WithDarkActionBar.ActionMode</item>
     </style>
 
-    <style name="DiaryThemePink" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DiaryThemePink" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#c649ad</item>
         <item name="colorPrimaryDark">#ff75365d</item>
         <item name="colorAccent">#ffe74bcb</item>
@@ -151,7 +151,7 @@
         <item name="actionModeStyle">@style/DiaryTheme.WithDarkActionBar.ActionMode</item>
     </style>
 
-    <style name="DiaryThemeGreenyBrown" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DiaryThemeGreenyBrown" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#1d5710</item>
         <item name="colorPrimaryDark">#ff172f0e</item>
         <item name="colorAccent">#ff207a11</item>

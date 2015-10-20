@@ -15,7 +15,8 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:id="@+id/message_pane"
-            tools:layout="@layout/fragment_message_sender" />
+            tools:layout="@layout/fragment_message_sender"
+            android:layout_gravity="right"/>
 
         <fragment
             android:name="adonai.diary_browser.DiaryListFragment"
