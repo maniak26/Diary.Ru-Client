@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Layout;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -186,9 +188,9 @@ public class DiaryListActivity extends DiaryActivity
 
         mUiHandler = new Handler(this);
         CookieSyncManager.createInstance(this);
-
         initializeUI(mainPane.getView());
 
+        mLogin = (TextView) navigationView.findViewById(R.id.login_name);
     }
 
     public void initializeUI(View main) {
@@ -229,7 +231,7 @@ public class DiaryListActivity extends DiaryActivity
         mPageBrowser.setOnClickListener(this);
         registerForContextMenu(mPageBrowser);
 
-        //mLogin = (TextView) findViewById(R.id.login_name);
+        //mLogin = (TextView) main.findViewById(R.id.login_name);
 
         //mExitButton = (ImageButton) main.findViewById(R.id.exit_button);
         //mExitButton.setOnClickListener(this);
@@ -444,9 +446,7 @@ public class DiaryListActivity extends DiaryActivity
                     pd.setContent(getString(R.string.hacking_cloudflare));
                 return true;
             case Utils.HANDLE_UPDATE_HEADERS:
-                // обрабатываем обновление контента
-                // TODO: rerutn this
-                //mLogin.setText(getUser().getUserName());
+                mLogin.setText(getUser().getUserName());
                 if (getUser().getNewDiaryCommentsNum() != 0)
                     ;
                     // TODO: rerutn this
