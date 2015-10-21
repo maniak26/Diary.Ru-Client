@@ -14,12 +14,13 @@
             android:id="@+id/nav_diary" />
         <item
             android:title="@string/discussions"
-            android:id="@+id/nav_discussions" />
+            android:id="@+id/nav_discussions"
+            app:actionLayout="@layout/navigation_menu_discussions_counter"
+            app:showAsAction="always"/>
         <item
             android:title="@string/quotes"
             android:id="@+id/nav_quotes" />
-        </group>
-    <group android:checkableBehavior="single">
+
         <item xmlns:app="http://schemas.android.com/apk/res-auto"
             android:title="@string/umail"
             android:id="@+id/nav_umail"
