@@ -195,7 +195,13 @@ public class DiaryListActivity extends DiaryActivity
         CookieSyncManager.createInstance(this);
         initializeUI(mainPane.getView());
         //TODO: разобрать инициализацию по отдельным функциям
+
         mLogin = (TextView) navigationView.findViewById(R.id.login_name);
+
+        //mUmailNum = (TextView) navigationView.findViewById(R.id.nav_umail_counter);
+        //mUmailNum.setOnClickListener(this);
+        //mUmailNum.setVisibility(View.GONE);
+
     }
 
     public void initializeUI(View main) {
@@ -461,7 +467,7 @@ public class DiaryListActivity extends DiaryActivity
                     pd.setContent(getString(R.string.hacking_cloudflare));
                 return true;
             case Utils.HANDLE_UPDATE_HEADERS:
-                mLogin.setText(getUser().getUserName());
+                //mLogin.setText(getUser().getUserName());
                 if (getUser().getNewDiaryCommentsNum() != 0)
                     ;
                     // TODO: rerutn this
