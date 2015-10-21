@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
@@ -17,10 +18,13 @@
         <item
             android:title="@string/quotes"
             android:id="@+id/nav_quotes" />
-        <item
+        </group>
+    <group android:checkableBehavior="single">
+        <item xmlns:app="http://schemas.android.com/apk/res-auto"
             android:title="@string/umail"
             android:id="@+id/nav_umail"
-            android:icon="@android:drawable/presence_offline"/>
+            app:actionLayout="@layout/navigation_menu_umail_counter"
+            app:showAsAction="always"/>
     </group>
 
     <item android:title="@string/nav_others">
