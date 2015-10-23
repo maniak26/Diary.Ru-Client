@@ -43,10 +43,15 @@ public class DiaryListFragment extends DiaryFragment {
     private URLAutocompleteAdapter mUrlAdapter; // created on attach to activity
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mUrlAdapter = new URLAutocompleteAdapter(getActivity(), getDiaryActivity().mDatabase.getAutocompleteCursor(DatabaseHandler.AutocompleteType.URL, ""));
-
 
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_diary_list, container, false);

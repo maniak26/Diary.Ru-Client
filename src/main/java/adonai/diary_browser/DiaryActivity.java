@@ -11,11 +11,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +42,7 @@ import com.android.vending.util.Purchase;
 
 import adonai.diary_browser.database.DatabaseHandler;
 import adonai.diary_browser.entities.Post;
+import adonai.diary_browser.preferences.PreferencePage;
 
 /**
  * Родительская активность для всех остальных.
@@ -48,7 +57,7 @@ import adonai.diary_browser.entities.Post;
  * 
  * @author Адонай
  */
-public abstract class DiaryActivity extends AppCompatActivity implements Callback {
+public class DiaryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Callback {
     private static final int HANDLE_APP_START = -100;
     private static final String SKU_DONATE = "small";
 
@@ -74,7 +83,15 @@ public abstract class DiaryActivity extends AppCompatActivity implements Callbac
     protected Uri imageToUpload;
     
     protected DatabaseHandler mDatabase;
-    
+
+    protected TextView mLogin;
+    protected TextView mUmailNum;
+    protected Toolbar toolbar;
+    protected FloatingActionButton fab;
+    protected DrawerLayout drawer;
+    protected NavigationView navigationView;
+
+
     SlidingPaneLayout.PanelSlideListener sliderListener = new SlidingPaneLayout.PanelSlideListener() {
         @Override
         public void onPanelSlide(View view, float v) {
@@ -99,12 +116,36 @@ public abstract class DiaryActivity extends AppCompatActivity implements Callbac
     protected void onCreate(Bundle savedInstanceState) {
         Utils.setupTheme(this);
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_diary_new);
         mSharedPrefs = getApplicationContext().getSharedPreferences(Utils.mPrefsFile, MODE_PRIVATE);
         mDatabase = new DatabaseHandler(this);
         mUiHandler = new Handler(this);
 
         String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjuleYDZj7oG7JeX8+bwJWQrf+DYgqGOSiIA6frTZJ+/C7Jt/+PMbWjd/rOelshuYy5HWqywFjvOPoK18zIRMavS1QtlxIMbA/eaVlk+QKEaqOY0EIuBUEIog9e2H7HMq9BVE7o1j8NFuG0skj2jDYfO2R0OfZS2xetqQcXtEtQLp0osS9GQK20oVfNM+LQyyG5ROcab3TmXXjiR0J43XdD8txhSLRB7gzFflMy9C1zYE7736i/R7NAHdmX6KRWmK+YsbI78Wnoy6xa63npdUTIcTUlUwV9zg6VWxQjSLsWnhkgqqJltmKGXk/d3DGYVlwZBu7XnwU0ufGvC1wBC09wIDAQAB";
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mLogin = (TextView) navigationView.findViewById(R.id.login_name);
+
         mHelper = new IabHelper(this, base64EncodedPublicKey);
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             @Override
@@ -341,4 +382,43 @@ public abstract class DiaryActivity extends AppCompatActivity implements Callbac
         slider.closePane();
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        switch (item.getItemId()) {
+            case R.id.nav_favlist:
+                //setCurrentTab(TAB_FAV_LIST, false);
+                break;
+            case R.id.nav_fav:
+                //setCurrentTab(TAB_FAV_POSTS, false);
+                drawer.closeDrawer(navigationView);
+                break;
+            case R.id.nav_diary:
+                //setCurrentTab(TAB_MY_DIARY, false);
+                drawer.closeDrawer(navigationView);
+                break;
+            case R.id.nav_discussions:
+                //setCurrentTab(TAB_DISCUSSIONS, false);
+                drawer.closeDrawer(navigationView);
+                break;
+            case R.id.nav_quotes:
+                handleBackground(Utils.HANDLE_PICK_URL, new Pair<>(getUser().getOwnDiaryUrl() + "?quote", false));
+                drawer.closeDrawer(navigationView);
+                break;
+            case R.id.nav_umail:
+                Intent postIntent = new Intent(getApplicationContext(), UmailListActivity.class);
+                startActivity(postIntent);
+                drawer.closeDrawer(navigationView);
+                break;
+            case R.id.nav_settings:
+                startActivity(new Intent(this, PreferencePage.class));
+                break;
+            case R.id.nav_menu_close:
+                break;
+        }
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

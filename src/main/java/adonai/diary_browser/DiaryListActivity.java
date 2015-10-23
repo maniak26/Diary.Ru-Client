@@ -114,10 +114,10 @@ public class DiaryListActivity extends DiaryActivity
     // Адаптеры типов
     DiaryListArrayAdapter mFavouritesAdapter;
     DiscListArrayAdapter mDiscussionsAdapter;
-    TextView mLogin;
+
     Button mDiscussNum;
     Button mCommentsNum;
-    TextView mUmailNum;
+
     ListView mDiaryBrowser;
     ExpandableListView mDiscussionBrowser;
     ImageButton mExitButton;
@@ -126,11 +126,6 @@ public class DiaryListActivity extends DiaryActivity
     ImageButton mScrollButton;
     LinearLayout mTabs;
     Handler mUiHandler;
-
-    Toolbar toolbar;
-    FloatingActionButton fab;
-    DrawerLayout drawer;
-    NavigationView navigationView;
 
     SwipeRefreshLayout swipeDiscussions;
     ArrowDrawable mActionBarToggle;
@@ -160,32 +155,10 @@ public class DiaryListActivity extends DiaryActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_diary_new);
+
 
         mainPane = (DiaryListFragment) getSupportFragmentManager().findFragmentById(R.id.main_pane);
         messagePane = (MessageSenderFragment) getSupportFragmentManager().findFragmentById(R.id.message_pane);
-
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         // Оповещаем остальных, что мы создались
         // Если был простой приложения
@@ -370,45 +343,7 @@ public class DiaryListActivity extends DiaryActivity
 
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        switch (item.getItemId()) {
-            case R.id.nav_favlist:
-                setCurrentTab(TAB_FAV_LIST, false);
-                break;
-            case R.id.nav_fav:
-                setCurrentTab(TAB_FAV_POSTS, false);
-                drawer.closeDrawer(navigationView);
-                break;
-            case R.id.nav_diary:
-                setCurrentTab(TAB_MY_DIARY, false);
-                drawer.closeDrawer(navigationView);
-                break;
-            case R.id.nav_discussions:
-                setCurrentTab(TAB_DISCUSSIONS, false);
-                drawer.closeDrawer(navigationView);
-                break;
-            case R.id.nav_quotes:
-                handleBackground(Utils.HANDLE_PICK_URL, new Pair<>(getUser().getOwnDiaryUrl() + "?quote", false));
-                drawer.closeDrawer(navigationView);
-                break;
-            case R.id.nav_umail:
-                Intent postIntent = new Intent(getApplicationContext(), UmailListActivity.class);
-                startActivity(postIntent);
-                drawer.closeDrawer(navigationView);
-                break;
-            case R.id.nav_settings:
-                startActivity(new Intent(this, PreferencePage.class));
-                break;
-            case R.id.nav_menu_close:
-                break;
-        }
-        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
