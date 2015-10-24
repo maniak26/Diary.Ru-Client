@@ -256,7 +256,7 @@ public class AuthorizationForm extends AppCompatActivity implements OnClickListe
                 editor.putString(Utils.KEY_PASSWORD, mPassword.getText().toString());
                 editor.commit();
 
-                startActivity(new Intent(this, DiaryListActivity.class));
+                startActivity(new Intent(this, DiaryActivity.class));
                 finish();
                 break;
             case R.id.request_reg_button:

@@ -98,7 +98,7 @@ import pl.droidsonroids.gif.GifImageButton;
  * <i>Замечание: содержит в себе асинхронный обработчик для посылки/приёма сообщений с сайта и отслеживания статуса</i>
  * 
  * @see DiaryListActivity
- * @see UmailListActivity
+ *
  * 
  * @author Адонай 
  * 

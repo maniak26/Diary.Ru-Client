@@ -249,7 +249,7 @@ public class NetworkService extends Service implements Callback, OnSharedPrefere
                     nBuilder.setOnlyAlertOnce(true);
                     nBuilder.setAutoCancel(true);
 
-                    final Intent intent = new Intent(this, DiaryListActivity.class); // при клике на уведомление открываем приложение
+                    final Intent intent = new Intent(this, DiaryActivity.class); // при клике на уведомление открываем приложение
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     String newUrl = UserData.getInstance().getMostRecentNotification();
                     if(newUrl != null) { // we don't support U-Mails for now
@@ -1286,7 +1286,7 @@ public class NetworkService extends Service implements Callback, OnSharedPrefere
         nBuilder.setLargeIcon(mNotificationIcon);
         nBuilder.setOngoing(true);
 
-        final Intent intent = new Intent(this, DiaryListActivity.class);
+        final Intent intent = new Intent(this, DiaryActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         nBuilder.setContentIntent(PendingIntent.getActivity(this, 0, intent, 0));
         return nBuilder.build();

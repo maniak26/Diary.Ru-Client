@@ -97,10 +97,10 @@ public class DiaryWebView extends WebView {
                 if (e1 != null && e2 != null && e2.getEventTime() - e1.getEventTime() < MILLIS_TO_FAST_SCROLL) {
                     if (distanceY > 90) {
                         scrolling = Utils.VIEW_SCROLL_DOWN;
-                        ((DiaryListActivity) mActivity).handleScroll(Utils.VIEW_SCROLL_DOWN);
+                        ((DiaryActivity) mActivity).handleScroll(Utils.VIEW_SCROLL_DOWN);
                     } else if (distanceY < -90) {
                         scrolling = Utils.VIEW_SCROLL_UP;
-                        ((DiaryListActivity) mActivity).handleScroll(Utils.VIEW_SCROLL_UP);
+                        ((DiaryActivity) mActivity).handleScroll(Utils.VIEW_SCROLL_UP);
                     }
                 }
 
@@ -176,8 +176,8 @@ public class DiaryWebView extends WebView {
                                 if (cd.getItemCount() > 0) {
                                     String copied = cd.getItemAt(0).getText().toString();
                                     String quoted = "<span class='quote_text'>" + copied + "</span>";
-                                    if (mActivity instanceof DiaryListActivity) { // цитируем
-                                        ((DiaryListActivity) mActivity).handleMessagePaneAddText(quoted);
+                                    if (mActivity instanceof DiaryActivity) { // цитируем
+                                        ((DiaryActivity) mActivity).handleMessagePaneAddText(quoted);
                                     }
                                 }
                             }

@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".DiaryFragment"
+    tools:context=".UmailListFragment"
     tools:showIn="@layout/app_bar_main_new"
-    android:id="@+id/contentContainer">
+    android:id="@+id/contentContainerUmail">
 
 
 </adonai.diary_browser.DiaryFragment>

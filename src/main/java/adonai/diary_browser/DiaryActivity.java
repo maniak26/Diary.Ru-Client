@@ -1,5 +1,6 @@
 package adonai.diary_browser;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,9 +28,11 @@ import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewFragment;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,32 +60,11 @@ import adonai.diary_browser.preferences.PreferencePage;
  * 
  * @author Адонай
  */
-public class DiaryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Callback {
-    private static final int HANDLE_APP_START = -100;
-    private static final String SKU_DONATE = "small";
+public class DiaryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
 
     protected IabHelper mHelper;
     protected boolean mCanBuy = false;
-
-    protected SwipeRefreshLayout swipeList;
-    protected SwipeRefreshLayout swipeBrowser;
-
-    protected DiarySlidePane slider;
-    protected DiaryFragment mainPane;
-    protected DiaryWebView mPageBrowser;
-    protected MessageSenderFragment messagePane;
-    protected MaterialDialog pd;
-     
-    protected Handler mUiHandler;
-    protected NetworkService mService;
-    protected DiaryHttpClient mHttpClient;
-    protected SharedPreferences mSharedPrefs;
-    
-    protected String pageToLoad;
-    protected String textToWrite;
-    protected Uri imageToUpload;
-    
-    protected DatabaseHandler mDatabase;
 
     protected TextView mLogin;
     protected TextView mUmailNum;
@@ -90,38 +72,25 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
     protected FloatingActionButton fab;
     protected DrawerLayout drawer;
     protected NavigationView navigationView;
+    protected SharedPreferences mSharedPrefs;
+    protected DiaryFragment diaryFragment;
+    protected DiaryListFragment diaryListFragment;
+    protected UmailListFragment umailListFragment;
+    protected DatabaseHandler mDatabase;
 
 
-    SlidingPaneLayout.PanelSlideListener sliderListener = new SlidingPaneLayout.PanelSlideListener() {
-        @Override
-        public void onPanelSlide(View view, float v) {
-            messagePane.setHasOptionsMenu(false);
-            mainPane.setHasOptionsMenu(false);
-        }
-
-        @Override
-        public void onPanelOpened(View view) {
-            messagePane.setHasOptionsMenu(true);
-            mainPane.setHasOptionsMenu(false);
-        }
-
-        @Override
-        public void onPanelClosed(View view) {
-            messagePane.setHasOptionsMenu(false);
-            mainPane.setHasOptionsMenu(true);
-        }
-    };
-
+    //костыли
+    public BrowseHistory browserHistory;
+    protected NetworkService mService;
+    protected DiarySlidePane slider;
+    protected MessageSenderFragment messagePane;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Utils.setupTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_new);
-        mSharedPrefs = getApplicationContext().getSharedPreferences(Utils.mPrefsFile, MODE_PRIVATE);
         mDatabase = new DatabaseHandler(this);
-        mUiHandler = new Handler(this);
-
-        String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjuleYDZj7oG7JeX8+bwJWQrf+DYgqGOSiIA6frTZJ+/C7Jt/+PMbWjd/rOelshuYy5HWqywFjvOPoK18zIRMavS1QtlxIMbA/eaVlk+QKEaqOY0EIuBUEIog9e2H7HMq9BVE7o1j8NFuG0skj2jDYfO2R0OfZS2xetqQcXtEtQLp0osS9GQK20oVfNM+LQyyG5ROcab3TmXXjiR0J43XdD8txhSLRB7gzFflMy9C1zYE7736i/R7NAHdmX6KRWmK+YsbI78Wnoy6xa63npdUTIcTUlUwV9zg6VWxQjSLsWnhkgqqJltmKGXk/d3DGYVlwZBu7XnwU0ufGvC1wBC09wIDAQAB";
+        mSharedPrefs = getApplicationContext().getSharedPreferences(Utils.mPrefsFile, MODE_PRIVATE);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -144,7 +113,16 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        diaryFragment = new DiaryFragment();
+        diaryListFragment = new DiaryListFragment();
+        umailListFragment = new UmailListFragment();
         mLogin = (TextView) navigationView.findViewById(R.id.login_name);
+        //mUmailNum = (TextView) navigationView.findViewById(R.id.nav_umail_counter);
+        //mUmailNum.setOnClickListener(this);
+        //mUmailNum.setVisibility(View.GONE);
+
+
+        String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjuleYDZj7oG7JeX8+bwJWQrf+DYgqGOSiIA6frTZJ+/C7Jt/+PMbWjd/rOelshuYy5HWqywFjvOPoK18zIRMavS1QtlxIMbA/eaVlk+QKEaqOY0EIuBUEIog9e2H7HMq9BVE7o1j8NFuG0skj2jDYfO2R0OfZS2xetqQcXtEtQLp0osS9GQK20oVfNM+LQyyG5ROcab3TmXXjiR0J43XdD8txhSLRB7gzFflMy9C1zYE7736i/R7NAHdmX6KRWmK+YsbI78Wnoy6xa63npdUTIcTUlUwV9zg6VWxQjSLsWnhkgqqJltmKGXk/d3DGYVlwZBu7XnwU0ufGvC1wBC09wIDAQAB";
 
         mHelper = new IabHelper(this, base64EncodedPublicKey);
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
@@ -160,11 +138,11 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onStart() {
         super.onStart();
-        slider = (DiarySlidePane) findViewById(R.id.slider);
-        slider.setPanelSlideListener(sliderListener);
-        slider.setSliderFadeColor(Color.WHITE);
 
-        mUiHandler.sendEmptyMessage(HANDLE_APP_START); // ensure that service is running
+        //slider = (DiarySlidePane) findViewById(R.id.slider);
+        //slider.setPanelSlideListener(sliderListener);
+        //slider.setSliderFadeColor(Color.WHITE);
+
 
         TypedValue color = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, color, true);
@@ -208,114 +186,7 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    @Override
-    public boolean handleMessage(Message msg) {
-        switch (msg.what) {
-            case HANDLE_APP_START:
-                mService = NetworkService.getInstance(this);
-                if (mService == null)
-                    mUiHandler.sendEmptyMessageDelayed(HANDLE_APP_START, 50);
-                else {
-                    setRequestedOrientation(mService.mOrientation);
-                    mHttpClient = mService.mNetworkClient;
-                    mUiHandler.sendEmptyMessage(Utils.HANDLE_START); // выполняем стартовые действия для всех остальных
 
-                    if (getPackageName().contains("pro"))
-                        break;
-                    
-                    showChangesPage();
-                }
-                break;
-            case Utils.HANDLE_SERVICE_ERROR:
-                Toast.makeText(getApplicationContext(), getString(R.string.service_not_running), Toast.LENGTH_SHORT).show();
-                break;
-            case Utils.HANDLE_CONNECTIVITY_ERROR:
-                Toast.makeText(getApplicationContext(), getString((Integer) msg.obj), Toast.LENGTH_SHORT).show();
-                break;
-            case Utils.HANDLE_NOTFOUND_ERROR:
-                Toast.makeText(getApplicationContext(), getString(R.string.notfound_error), Toast.LENGTH_SHORT).show();
-                break;
-            case Utils.HANDLE_JUST_DO_GET:
-                Toast.makeText(getApplicationContext(), getString(R.string.completed), Toast.LENGTH_SHORT).show();
-                break;
-        }
-        
-        if (pd != null) {
-            pd.dismiss();
-            pd = null;
-        }
-
-        return true;
-    }
-
-    private void showChangesPage() {
-        // Показываем страничку изменений
-        try {
-            final String current = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            final String stored = mSharedPrefs.getString("stored.version", "");
-            boolean show = mSharedPrefs.getBoolean("show.version", true);
-            if (show && !current.equals(stored)) {
-                mUiHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isFinishing()) // бывает при неверной авторизации
-                            return;
-
-                        // TODO: move to XML
-                        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(DiaryActivity.this);
-                        TextView message = new TextView(DiaryActivity.this);
-                        message.setMovementMethod(LinkMovementMethod.getInstance());
-                        message.setGravity(Gravity.CENTER_HORIZONTAL);
-                        message.setText(Html.fromHtml(getString(R.string.ad_text)));
-                        TypedValue color = new TypedValue();
-                        getTheme().resolveAttribute(R.attr.text_color_main, color, true);
-                        message.setTextColor(color.data);
-                        builder.setTitle(R.string.ad_title).setView(message);
-                        builder.setPositiveButton(R.string.help, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                purchaseGift();
-                            }
-                        });
-                        builder.setNegativeButton(R.string.later, null);
-                        builder.create().show();
-                    }
-                }, 5000);
-
-                mSharedPrefs.edit()
-                    .putString("stored.version", current)
-                    .apply();
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // не сработало - и ладно
-        }
-    }
-
-    protected void purchaseGift() {
-        if (mCanBuy) {
-            mHelper.launchPurchaseFlow(DiaryActivity.this, SKU_DONATE, 6666, new IabHelper.OnIabPurchaseFinishedListener() {
-                @Override
-                public void onIabPurchaseFinished(IabResult result, Purchase info) {
-                    if (result.isSuccess()) {
-                        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(DiaryActivity.this);
-                        builder.setTitle(R.string.completed).setMessage(R.string.thanks);
-                        builder.setPositiveButton(android.R.string.ok, null);
-                        builder.create().show();
-                    }
-
-                    mHelper.queryInventoryAsync(false, new IabHelper.QueryInventoryFinishedListener() {
-                        @Override
-                        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-                            if (result.isSuccess()) {
-                                if (inv.getPurchase(SKU_DONATE) != null)
-                                    mHelper.consumeAsync(inv.getPurchase(SKU_DONATE), null);
-                            }
-                        }
-                    });
-                }
-            }, "NothingAndNowhere" + getUser().getUserName());
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -328,43 +199,17 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    public void handleBackground(int opCode, Object body) {
-        if(pd != null && pd.isShowing()) {
-            pd.setTitle(R.string.loading);
-            pd.setContent(getString(R.string.loading_data));
-        } else {
-            pd = new MaterialDialog.Builder(this)
-                    .title(R.string.loading)
-                    .content(R.string.loading_data)
-                    .progress(true, 0)
-                    .build();
-            pd.show();
-        }
-
-        pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(DialogInterface dialog) {
-                mHttpClient.abort();
-            }
-        });
-        mService.handleRequest(opCode, body);
-    }
-
-    public void handleUi(int opCode, Object body) {
-        mUiHandler.sendMessage(mUiHandler.obtainMessage(opCode, body));
-    }
-
-    public void handleFontChange(String currSize) {
-        try {
-            int realNum = Integer.parseInt(currSize);
-            mPageBrowser.getSettings().setMinimumFontSize(realNum);
-        } catch (NumberFormatException ex) {
-            Toast.makeText(this, R.string.invalid_number, Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.diary_list_a, menu);
+        return true;
     }
 
     public DatabaseHandler getDatabase() {
         return mDatabase;
     }
+
 
     @Override
     protected void onDestroy() {
@@ -378,9 +223,7 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
         return UserData.getInstance();
     }
 
-    protected void onMessagePaneRemove(boolean reload) {
-        slider.closePane();
-    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -403,12 +246,13 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
                 drawer.closeDrawer(navigationView);
                 break;
             case R.id.nav_quotes:
-                handleBackground(Utils.HANDLE_PICK_URL, new Pair<>(getUser().getOwnDiaryUrl() + "?quote", false));
+                //handleBackground(Utils.HANDLE_PICK_URL, new Pair<>(getUser().getOwnDiaryUrl() + "?quote", false));
                 drawer.closeDrawer(navigationView);
                 break;
             case R.id.nav_umail:
-                Intent postIntent = new Intent(getApplicationContext(), UmailListActivity.class);
-                startActivity(postIntent);
+                //TODO call umail fragment here
+                //Intent postIntent = new Intent(getApplicationContext(), UmailListActivity.class);
+                //startActivity(postIntent);
                 drawer.closeDrawer(navigationView);
                 break;
             case R.id.nav_settings:
@@ -420,5 +264,22 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
         //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+        public void onBackPressed() {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    // костыли для вызова функций фрагментов
+
+    // Часть кода относится к кнопке быстрой промотки
+    void handleScroll(int direction) {
+        diaryListFragment.handleScroll(direction);
     }
 }
