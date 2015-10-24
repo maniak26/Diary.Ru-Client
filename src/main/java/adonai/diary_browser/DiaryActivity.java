@@ -82,6 +82,7 @@ public class DiaryActivity extends AppCompatActivity implements NavigationView.O
     //костыли
     public BrowseHistory browserHistory;
     protected NetworkService mService;
+
     protected DiarySlidePane slider;
     protected MessageSenderFragment messagePane;
     @Override
