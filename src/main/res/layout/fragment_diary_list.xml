@@ -7,6 +7,136 @@
     android:orientation="vertical"
     tools:ignore="RtlHardcoded">
 
+    <RelativeLayout
+        android:id="@+id/upper_deck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/panel_background">
+
+        <ImageButton
+            android:id="@+id/quotes_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/quotes_description"
+            android:scaleType="center"
+            android:src="@drawable/quotations"
+            android:tint="?attr/button_tint"/>
+
+        <ImageButton
+            android:id="@+id/exit_button"
+            android:layout_width="30dp"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/logout_drawable"
+            android:scaleType="center"
+            android:src="@drawable/user_diary_change" />
+
+        <TextView
+            android:id="@+id/login_name"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dip"
+            android:gravity="center"
+            android:layout_toLeftOf="@id/exit_button"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:textColor="?attr/horizontal_divider_color" />
+
+        <ImageButton
+            android:id="@+id/umail_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/quotes_button"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/umail_description"
+            android:scaleType="center"
+            android:src="@drawable/umail_folders"
+            android:tint="?attr/button_tint"/>
+
+        <TextView
+            android:id="@+id/umail_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@+id/umail_button"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="?attr/horizontal_divider_color"/>
+
+        <HorizontalScrollView
+            android:id="@+id/tabs_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/umail_button"
+            android:layout_marginTop="-5dp"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabs"
+                android:clickable="false"
+                android:showDividers="middle">
+
+                <Button
+                    android:textColor="?attr/text_color_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/favourites"
+                    android:id="@+id/favlist_button"
+                    android:textStyle="bold"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:textColor="?attr/text_color_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/posts"
+                    android:id="@+id/fav_button"
+                    android:textStyle="bold"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:textColor="?attr/text_color_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_diary"
+                    android:id="@+id/diary_button"
+                    android:textStyle="bold"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:textColor="?attr/text_color_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/discussions"
+                    android:id="@+id/discussions_button"
+                    android:textStyle="bold"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/horizontal_divider_color"
+            android:layout_below="@id/tabs_scrollview" />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@android:id/tabcontent"
@@ -52,19 +182,7 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/updown_button"
-            android:layout_gravity="right|center_vertical"
-            android:background="@android:color/transparent"
-            android:src="@drawable/overscroll_button_down"
-            android:visibility="invisible"
             tools:visibility="visible"
-            android:scaleType="fitXY"
-            android:contentDescription="@string/overscroll_button"
-            android:padding="5dp" />
-
     </FrameLayout>
 
 </LinearLayout>
