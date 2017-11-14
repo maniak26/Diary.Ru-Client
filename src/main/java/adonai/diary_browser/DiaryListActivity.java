@@ -1,5 +1,6 @@
 package adonai.diary_browser;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -9,10 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -487,6 +490,11 @@ public class DiaryListActivity extends DiaryActivity implements OnClickListener,
                             public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
                                 switch (i) {
                                     case DiaryWebView.IMAGE_SAVE: {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            if (!Settings.System.canWrite(DiaryListActivity.this)) {
+                                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                                            }
+                                        }
                                         Toast.makeText(DiaryListActivity.this, getString(R.string.loading), Toast.LENGTH_SHORT).show();
                                         mService.handleRequest(Utils.HANDLE_PICK_URL, new Pair<>(src, true));
                                     }
